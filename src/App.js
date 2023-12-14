@@ -1,11 +1,18 @@
-import { Container } from "react-bootstrap";
-import Header from "./components/Header";
+import { Route, Routes } from "react-router-dom";
+import Home from "./pages/Home";
+import CardDetail from "./pages/CardDetail";
+import ContextProvider from "./context/MarvelContext";
 
 function App() {
   return (
-    <Container className="text-center mt-5">
-       <Header />
-  </Container>
+    <div>
+      <ContextProvider>
+        <Routes>
+          <Route path="/" element={<Home />} />
+          <Route path="/details/:id" element={<CardDetail />} />
+        </Routes>
+      </ContextProvider>
+    </div>
   );
 }
 
