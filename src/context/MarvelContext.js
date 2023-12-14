@@ -8,14 +8,39 @@ const hash = process.env.REACT_APP_MARVEL_HASH;
 
 const ContextProvider = ({ children }) => {
   const [characters, setCharacters] = useState([]);
+  const [details, setDetails] = useState({});
   const [loading, setLoading] = useState(false);
+  const [comics, setComics] = useState([]);
 
   useEffect(() => {
     getCharacters();
   }, []);
 
+  const getCharacterDetails = async (id) => {
+    console.log(id);
+    setLoading(true);
+    await axios
+      .get(
+        `https://gateway.marvel.com:443/v1/public/characters/${id}?ts=${ts}&apikey=${publicKey}&hash=${hash}`
+      )
+      .then((res) => setDetails(res.data.data.results[0]))
+      .catch((err) => console.log(err))
+      .finally(() => setLoading(false));
+  };
+  const getCharacterComics = async (id) => {
+    console.log(id);
+    setLoading(true);
+    await axios
+      .get(
+        `https://gateway.marvel.com:443/v1/public/characters/${id}/comics?orderBy=onsaleDate&limit=10&ts=${ts}&apikey=${publicKey}&hash=${hash}`
+      )
+      .then((res) => setComics(res.data.data.results))
+      .catch((err) => console.log(err))
+      .finally(() => setLoading(false));
+  };
+
   const getCharacters = async (searchTerm) => {
-    console.log(searchTerm);
+    // console.log(searchTerm);
     setLoading(true);
     if (searchTerm) {
       await axios
@@ -36,7 +61,17 @@ const ContextProvider = ({ children }) => {
     }
   };
   return (
-    <MarvelContext.Provider value={{ characters, getCharacters, loading }}>
+    <MarvelContext.Provider
+      value={{
+        characters,
+        getCharacters,
+        loading,
+        details,
+        getCharacterDetails,
+        getCharacterComics,
+        comics,
+      }}
+    >
       {children}
     </MarvelContext.Provider>
   );

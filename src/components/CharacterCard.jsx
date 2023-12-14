@@ -5,11 +5,12 @@ import { useNavigate } from "react-router-dom";
 
 const CharacterCard = (character) => {
   let navigate = useNavigate();
+  const id = character.id
 
   return (
     <Col>
       <Card
-        onClick={() => navigate("/details/" + character.id)}
+        onClick={() => navigate("/details/" + id)}
         className="player-card"
         role="button"
       >
@@ -19,7 +20,7 @@ const CharacterCard = (character) => {
           height="350px"
           alt={character.name}
         />
-        <Card.Footer>
+        <Card.Footer className="bg-white">
           <Card.Title>{character.name}</Card.Title>
         </Card.Footer>
       </Card>

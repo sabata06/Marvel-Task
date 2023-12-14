@@ -14,13 +14,14 @@ const ContainerCard = () => {
   const onSearch = (e) => {
     setSearchTerm(e);
     getCharacters(searchTerm);
+    console.log(characters);
   };
 
   return (
     <>
       <Form.Control
         type="search"
-        placeholder="Search "
+        placeholder="Search characters..."
         onChange={(e) => onSearch(e.target.value)}
         value={searchTerm}
         autoFocus
