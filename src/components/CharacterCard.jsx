@@ -11,7 +11,7 @@ const CharacterCard = (character) => {
     <Col>
       <Card
         onClick={() => navigate("/details/" + id)}
-        className="player-card"
+        className="character-card"
         role="button"
       >
         <Card.Img
