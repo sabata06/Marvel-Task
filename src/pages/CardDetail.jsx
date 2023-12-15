@@ -10,7 +10,7 @@ import loadingImg from "./../assets/loading.gif";
 const CardDetail = () => {
   const { details, loading, getCharacterDetails, getCharacterComics, comics } =
     useContext(MarvelContext);
-  console.log(details);
+  // console.log(details);
   const { id } = useParams();
 
   const { name, description, thumbnail } = details;

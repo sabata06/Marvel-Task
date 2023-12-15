@@ -17,7 +17,7 @@ const ContextProvider = ({ children }) => {
   }, []);
 
   const getCharacterDetails = async (id) => {
-    console.log(id);
+    // console.log(id);
     setLoading(true);
     await axios
       .get(
@@ -28,7 +28,7 @@ const ContextProvider = ({ children }) => {
       .finally(() => setLoading(false));
   };
   const getCharacterComics = async (id) => {
-    console.log(id);
+    // console.log(id);
     setLoading(true);
     await axios
       .get(

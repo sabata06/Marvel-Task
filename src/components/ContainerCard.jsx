@@ -14,7 +14,7 @@ const ContainerCard = () => {
   const onSearch = (e) => {
     setSearchTerm(e);
     getCharacters(searchTerm);
-    console.log(characters);
+    // console.log(characters);
   };
 
   return (
