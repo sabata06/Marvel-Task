@@ -1,4 +1,3 @@
-// import axios from "axios";
 import React, { useContext, useEffect } from "react";
 import { Link, useParams } from "react-router-dom";
 import Container from "react-bootstrap/Container";
@@ -6,13 +5,18 @@ import Card from "react-bootstrap/Card";
 import ListGroup from "react-bootstrap/ListGroup";
 import { MarvelContext } from "../context/MarvelContext";
 import loadingImg from "./../assets/loading.gif";
+import ErrorComponent from "../components/ErrorComponent";
 
-const CardDetail = () => {
-  const { details, loading, getCharacterDetails, getCharacterComics, comics } =
-    useContext(MarvelContext);
-  // console.log(details);
+const CharacterDetail = () => {
+  const {
+    details,
+    loading,
+    getCharacterDetails,
+    getCharacterComics,
+    comics,
+    error,
+  } = useContext(MarvelContext);
   const { id } = useParams();
-
   const { name, description, thumbnail } = details;
 
   useEffect(() => {
@@ -20,9 +24,18 @@ const CardDetail = () => {
     getCharacterComics(id);
   }, []);
 
+  if (error) {
+    return (
+      <Container className="py-5 text-center">
+        <ErrorComponent />
+      </Container>
+    );
+  }
+
+
   return (
-    <Container className="py-5">
-      {/* <h1 className="text-center text-black text-3xl ">{name}</h1> */}
+
+    <Container style={{ maxWidth: "768px" }} className="py-5">
       <Container className="px-10">
         <Card>
           {loading ? (
@@ -76,4 +89,4 @@ const CardDetail = () => {
   );
 };
 
-export default CardDetail;
+export default CharacterDetail;

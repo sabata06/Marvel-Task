@@ -5,17 +5,27 @@ import Row from "react-bootstrap/Row";
 import CharacterCard from "./CharacterCard";
 import { MarvelContext } from "../context/MarvelContext";
 import loadingImg from "./../assets/loading.gif";
+import ErrorComponent from "./ErrorComponent";
+
 
 const ContainerCard = () => {
-  const { characters, getCharacters, loading } = useContext(MarvelContext);
+  const { characters, getCharacters, loading, error } = useContext(MarvelContext);
 
   const [searchTerm, setSearchTerm] = useState("");
 
-  const onSearch = (e) => {
-    setSearchTerm(e);
+  const onSearch = (text) => {
+    setSearchTerm(text);
     getCharacters(searchTerm);
     // console.log(characters);
   };
+  
+  if (error) {
+    return (
+      <Container className="py-5 text-center">
+        <ErrorComponent />
+      </Container>
+    );
+  }
 
   return (
     <>
@@ -26,6 +36,7 @@ const ContainerCard = () => {
         value={searchTerm}
         autoFocus
       />
+      {error && <ErrorComponent/>}
       <Container className="p-3 rounded-4 card-container my-3">
         {loading ? (
           <div className="mt-5" role="status">
@@ -44,6 +55,7 @@ const ContainerCard = () => {
             ))}
           </Row>
         )}
+   
       </Container>
     </>
   );
