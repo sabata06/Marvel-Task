@@ -20,7 +20,7 @@ Marvel Character Explorer is a web application that allows users to explore char
 The application is deployed and can be accessed at https://marvel-characters-nine.vercel.app/.
 
 ## Getting Started
-1. Clone this repository: `git clone <https://github.com/sabata06/Marvel-Task.git>`.
+1. Clone this repository: `git clone https://github.com/sabata06/Marvel-Task.git`.
 2. Install dependencies: `npm install`.
 3. Start the development server: `npm start`.
 4. Open http://localhost:3000 in your browser.
