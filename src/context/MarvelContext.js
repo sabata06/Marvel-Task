@@ -13,6 +13,7 @@ const ContextProvider = ({ children }) => {
   const publicKey = process.env.REACT_APP_MARVEL_PUBLIC_KEY;
   const ts = process.env.REACT_APP_MARVEL_TS;
   const hash = process.env.REACT_APP_MARVEL_HASH;
+  const BASE_URL = "https://gateway.marvel.com:443/v1/public/characters";
 
   const fetchData = async (url, setData) => {
     setLoading(true);
@@ -33,21 +34,21 @@ const ContextProvider = ({ children }) => {
 
   useEffect(() => {
     fetchData(
-      `https://gateway.marvel.com:443/v1/public/characters?ts=${ts}&limit=30&apikey=${publicKey}&hash=${hash}`,
+      `${BASE_URL}?ts=${ts}&limit=30&apikey=${publicKey}&hash=${hash}`,
       setCharacters
     );
   }, [publicKey, ts, hash]);
 
   const getCharacterDetails = async (id) => {
     fetchData(
-      `https://gateway.marvel.com:443/v1/public/characters/${id}?ts=${ts}&apikey=${publicKey}&hash=${hash}`,
+      `${BASE_URL}/${id}?ts=${ts}&apikey=${publicKey}&hash=${hash}`,
       setDetails
     );
   };
 
   const getCharacterComics = async (id) => {
     fetchData(
-      `https://gateway.marvel.com:443/v1/public/characters/${id}/comics?orderBy=onsaleDate&limit=10&ts=${ts}&apikey=${publicKey}&hash=${hash}`,
+      `${BASE_URL}/${id}/comics?orderBy=onsaleDate&limit=10&ts=${ts}&apikey=${publicKey}&hash=${hash}`,
       setComics
     );
   };
@@ -55,12 +56,12 @@ const ContextProvider = ({ children }) => {
   const getCharacters = async (searchTerm) => {
     if (searchTerm) {
       fetchData(
-        `https://gateway.marvel.com:443/v1/public/characters?nameStartsWith=${searchTerm}&limit=30&ts=${ts}&apikey=${publicKey}&hash=${hash}`,
+        `${BASE_URL}?nameStartsWith=${searchTerm}&limit=30&ts=${ts}&apikey=${publicKey}&hash=${hash}`,
         setCharacters
       );
     } else {
       fetchData(
-        `https://gateway.marvel.com:443/v1/public/characters?ts=${ts}&limit=30&apikey=${publicKey}&hash=${hash}`,
+        `${BASE_URL}?ts=${ts}&limit=30&apikey=${publicKey}&hash=${hash}`,
         setCharacters
       );
     }
@@ -69,14 +70,14 @@ const ContextProvider = ({ children }) => {
   return (
     <MarvelContext.Provider
       value={{
-        characters,
         getCharacters,
-        loading,
-        details,
         getCharacterDetails,
         getCharacterComics,
-        comics,
+        loading,
         error,
+        details,
+        comics,
+        characters,
       }}
     >
       {children}

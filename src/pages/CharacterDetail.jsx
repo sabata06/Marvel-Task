@@ -16,6 +16,7 @@ const CharacterDetail = () => {
     comics,
     error,
   } = useContext(MarvelContext);
+
   const { id } = useParams();
   const { name, description, thumbnail } = details;
 
@@ -32,14 +33,12 @@ const CharacterDetail = () => {
     );
   }
 
-
   return (
-
     <Container style={{ maxWidth: "768px" }} className="py-5">
       <Container className="px-10">
         <Card>
           {loading ? (
-            <div className="mx-auto my-auto" role="status">
+            <div className="mx-auto my-auto " role="status">
               <img src={loadingImg} alt="loading" />
             </div>
           ) : (
@@ -74,8 +73,8 @@ const CharacterDetail = () => {
                   >
                     <img
                       className="rounded"
-                      src={comic.thumbnail.path + "/portrait_medium.jpg"}
-                      alt={comic.title}
+                      src={comic?.thumbnail.path + "/portrait_medium.jpg"}
+                      alt={comic?.title}
                     />
                     <h4 className="ps-4">{comic?.title}</h4>
                   </ListGroup.Item>
