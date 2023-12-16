@@ -1,5 +1,5 @@
-import Container from "react-bootstrap/Container"; //! bu yöntem performanslı olan yöntem
-import {Image} from "react-bootstrap"; //! bu yöntem diğer yönteme göre daha az tavsiye edilen
+import Container from "react-bootstrap/Container"; 
+import {Image} from "react-bootstrap";
 import logo from "./../assets/Marvel_Logo.svg"
 
 const Header = () => {

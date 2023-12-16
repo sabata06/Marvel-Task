@@ -60,7 +60,7 @@ const CharacterDetail = () => {
             </div>
             <ListGroup>
               <ListGroup.Item>
-                <Link to={-1}>Go Back</Link>
+                <Link data-test="goBack" to={"/"}>Go Back</Link>
               </ListGroup.Item>
             </ListGroup>
             <div className="text-center">

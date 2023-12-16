@@ -10,7 +10,6 @@ import ErrorComponent from "./ErrorComponent";
 
 const ContainerCard = () => {
   const { characters, getCharacters, loading, error } = useContext(MarvelContext);
-
   const [searchTerm, setSearchTerm] = useState("");
 
   const onSearch = (text) => {
