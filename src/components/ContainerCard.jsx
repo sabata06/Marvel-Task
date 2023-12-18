@@ -3,7 +3,7 @@ import { Container, Row, Form } from "react-bootstrap";
 import { MarvelContext } from "../context/MarvelContext";
 import CharacterCard from "./CharacterCard";
 import ErrorComponent from "./ErrorComponent";
-
+import loadingImg  from "../assets/loading.gif"
 const ContainerCard = () => {
 
   const { characters, getCharacters, loading, error, lastCharacterRef } = useContext(MarvelContext);
@@ -60,6 +60,8 @@ const ContainerCard = () => {
                 return <CharacterCard key={i} {...character} />;
               }
             })}
+
+            {loading && <img src={loadingImg} alt="loading" />}
           </Row>
       </Container>
     </>
