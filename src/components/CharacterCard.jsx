@@ -1,9 +1,9 @@
-import React from "react";
+import React, { forwardRef } from "react";
 import Col from "react-bootstrap/Col";
 import Card from "react-bootstrap/Card";
 import { useNavigate } from "react-router-dom";
 
-const CharacterCard = (character) => {
+const CharacterCard = forwardRef((character, ref) => {
   let navigate = useNavigate();
   const id = character.id
 
@@ -13,6 +13,7 @@ const CharacterCard = (character) => {
         onClick={() => navigate("/details/" + id)}
         className="character-card"
         role="button"
+        ref={ref}
       >
         <Card.Img
           variant="top"
@@ -26,6 +27,6 @@ const CharacterCard = (character) => {
       </Card>
     </Col>
   );
-};
+});
 
 export default CharacterCard;

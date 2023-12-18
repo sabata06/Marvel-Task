@@ -1,4 +1,4 @@
-import React, { createContext, useEffect, useState } from "react";
+import React, { createContext, useEffect, useState, useRef, useCallback } from "react";
 import axios from "axios";
 
 export const MarvelContext = createContext();
@@ -9,20 +9,37 @@ const ContextProvider = ({ children }) => {
   const [loading, setLoading] = useState(false);
   const [comics, setComics] = useState([]);
   const [error, setError] = useState(false);
+  const [page, setPage] = useState(1);
+
+  const observer = useRef();
+  const lastCharacterRef = useCallback(node => {
+    if (loading) return;
+    if (observer.current) observer.current.disconnect();
+    observer.current = new IntersectionObserver(entries => {
+      if (entries[0].isIntersecting) {
+        setPage(prevPageNumber => prevPageNumber + 1);
+      }
+    })
+    if (node) observer.current.observe(node);
+  }, [loading]);
 
   const publicKey = process.env.REACT_APP_MARVEL_PUBLIC_KEY;
   const ts = process.env.REACT_APP_MARVEL_TS;
   const hash = process.env.REACT_APP_MARVEL_HASH;
   const BASE_URL = "https://gateway.marvel.com:443/v1/public/characters";
-
-  const fetchData = async (url, setData) => {
+  
+  const fetchData = async (url, setData, appendData = false) => {
     setLoading(true);
     try {
       const res = await axios.get(url);
       if (setData === setDetails) {
         setData(res.data.data.results[0]);
       } else {
-        setData(res.data.data.results);
+        if (appendData) {
+          setData(prevData => [...prevData, ...res.data.data.results]);
+        } else {
+          setData(res.data.data.results);
+        }
       }
       setLoading(false);
     } catch (err) {
@@ -31,14 +48,6 @@ const ContextProvider = ({ children }) => {
       setLoading(false);
     }
   };
-
-  useEffect(() => {
-    fetchData(
-      `${BASE_URL}?ts=${ts}&limit=30&apikey=${publicKey}&hash=${hash}`,
-      setCharacters
-    );
-  }, [publicKey, ts, hash]);
-
   const getCharacterDetails = async (id) => {
     fetchData(
       `${BASE_URL}/${id}?ts=${ts}&apikey=${publicKey}&hash=${hash}`,
@@ -67,6 +76,16 @@ const ContextProvider = ({ children }) => {
     }
   };
 
+
+  useEffect(() => {
+    fetchData(
+      `${BASE_URL}?ts=${ts}&limit=30&apikey=${publicKey}&hash=${hash}&offset=${page * 30}`,
+      setCharacters,
+      true
+    );
+  }, [publicKey, ts, hash, page]);
+
+
   return (
     <MarvelContext.Provider
       value={{
@@ -78,6 +97,7 @@ const ContextProvider = ({ children }) => {
         details,
         comics,
         characters,
+        lastCharacterRef
       }}
     >
       {children}

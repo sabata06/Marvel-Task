@@ -1,23 +1,38 @@
-import React, { useContext, useState } from "react";
-import Form from "react-bootstrap/Form";
-import Container from "react-bootstrap/Container";
-import Row from "react-bootstrap/Row";
-import CharacterCard from "./CharacterCard";
+import React, { useContext, useState, useEffect, useRef } from "react";
+import { Container, Row, Form } from "react-bootstrap";
 import { MarvelContext } from "../context/MarvelContext";
-import loadingImg from "./../assets/loading.gif";
+import CharacterCard from "./CharacterCard";
 import ErrorComponent from "./ErrorComponent";
-
+import loadingImg from "../assets/loading.gif";
 
 const ContainerCard = () => {
-  const { characters, getCharacters, loading, error } = useContext(MarvelContext);
+  const { characters, getCharacters, loading, error, lastCharacterRef } = useContext(MarvelContext);
   const [searchTerm, setSearchTerm] = useState("");
+  const scrollPosition = useRef(window.scrollY);
 
   const onSearch = (text) => {
     setSearchTerm(text);
     getCharacters(searchTerm);
-    // console.log(characters);
   };
-  
+
+  useEffect(() => {
+    const handleScroll = () => {
+      scrollPosition.current = window.scrollY;
+    };
+
+    window.addEventListener('scroll', handleScroll);
+
+    return () => {
+      window.removeEventListener('scroll', handleScroll);
+    };
+  }, []);
+
+  useEffect(() => {
+    if (!loading) {
+      window.scrollTo(0, scrollPosition.current);
+    }
+  }, [loading]);
+
   if (error) {
     return (
       <Container className="py-5 text-center">
@@ -35,26 +50,17 @@ const ContainerCard = () => {
         value={searchTerm}
         autoFocus
       />
-      {error && <ErrorComponent/>}
+      {error && <ErrorComponent />}
       <Container className="p-3 rounded-4 card-container my-3">
-        {loading ? (
-          <div className="mt-5" role="status">
-            <img src={loadingImg} alt="loading" />
-          </div>
-        ) : (
-          <Row
-            xs={1}
-            sm={2}
-            md={3}
-            lg={4}
-            className="justify-content-center g-3"
-          >
-            {characters.map((character, i) => (
-              <CharacterCard key={i} {...character} />
-            ))}
+          <Row xs={1} sm={2} md={3} lg={4} className="justify-content-center g-3">
+            {characters.map((character, i) => {
+              if (characters.length === i + 1) {
+                return <CharacterCard ref={lastCharacterRef} key={i} {...character} />;
+              } else {
+                return <CharacterCard key={i} {...character} />;
+              }
+            })}
           </Row>
-        )}
-   
       </Container>
     </>
   );
