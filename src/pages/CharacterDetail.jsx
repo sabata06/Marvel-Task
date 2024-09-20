@@ -58,6 +58,7 @@ const CharacterDetail = () => {
               <Card.Title className="display-1 p-2 fw-bold">{name}</Card.Title>
               <Card.Text className="h4 p-4">{description}</Card.Text>
             </div>
+//*update
             <ListGroup>
               <ListGroup.Item>
                 <Link data-test="goBack" to={"/"}>Go Back</Link>
